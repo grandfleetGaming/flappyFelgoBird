@@ -11,10 +11,10 @@ PRODUCT_VERSION_NAME = 1.0.0
 PRODUCT_VERSION_CODE = 1
 
 qmlFolder.source = qml
-DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
+# DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
 
 assetsFolder.source = assets
-# DEPLOYMENTFOLDERS += assetsFolder
+DEPLOYMENTFOLDERS += assetsFolder
 
 # Add more folders to ship with the application here
 
