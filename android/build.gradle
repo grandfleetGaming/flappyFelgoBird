@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+@if "%{IncludeGCM}" == "1" || "%{IncludeFirebase}" == "1"
+        // TODO: uncomment below to use google services (e.g. for GCM or Firebase plugin)
+        // classpath 'com.google.gms:google-services:3.0.0'
+@endif
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://maven.google.com' }
+        jcenter()
+        maven { url 'https://sdk.v-play.net/maven/' }
+    }
+}
+
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile "com.android.support:support-core-utils:27.1.0"
+    compile "com.android.support:appcompat-v7:27.1.0"
+
+@if "%{IncludeAdMob}" == "1"
+    compile 'net.vplay.plugins:plugin-admob:3.+'
+@endif
+@if "%{IncludeChartboost}" == "1"
+    compile 'net.vplay.plugins:plugin-chartboost:3.+'
+@endif
+@if "%{IncludeSoomla}" == "1"
+    compile 'net.vplay.plugins:plugin-soomla:3.+'
+@endif
+@if "%{IncludeFlurry}" == "1"
+    compile 'net.vplay.plugins:plugin-flurry:3.+'
+@endif
+@if "%{IncludeHockeyApp}" == "1"
+    compile 'net.vplay.plugins:plugin-hockeyapp:3.+'
+@endif
+@if "%{IncludeFacebook}" == "1"
+    compile 'net.vplay.plugins:plugin-facebook:3.+'
+@endif
+@if "%{IncludeOneSignal}" == "1"
+    compile 'net.vplay.plugins:plugin-onesignal:3.+'
+@endif
+@if "%{IncludeGCM}" == "1"
+    compile 'net.vplay.plugins:plugin-gcm:3.+'
+@endif
+@if "%{IncludeFirebase}" == "1"
+    compile 'net.vplay.plugins:plugin-firebase:3.+'
+@endif
+@if "%{IncludeLocalNotifications}" == "1"
+    compile 'net.vplay.plugins:plugin-notification:3.+'
+@endif
+}
+
+android {
+    /*******************************************************
+     * The following variables:
+     * - androidBuildToolsVersion,
+     * - androidCompileSdkVersion
+     * - qt5AndroidDir - holds the path to qt android files
+     *                   needed to build any Qt application
+     *                   on Android.
+     *
+     * are defined in gradle.properties file. This file is
+     * updated by QtCreator and androiddeployqt tools.
+     * Changing them manually might break the compilation!
+     *******************************************************/
+
+    compileSdkVersion androidCompileSdkVersion.toInteger()
+    buildToolsVersion androidBuildToolsVersion
+
+    defaultConfig {
+      applicationId = productIdentifier
+      versionCode = productVersionCode.toInteger()
+      versionName = productVersionName
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = [qt5AndroidDir + '/src', 'src', 'java']
+            aidl.srcDirs = [qt5AndroidDir + '/src', 'src', 'aidl']
+            res.srcDirs = [qt5AndroidDir + '/res', 'res']
+            resources.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+       }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+@if "%{IncludeGCM}" == "1" || "%{IncludeFirebase}" == "1"
+// TODO: uncomment below to use google services (e.g. for GCM or Firebase plugin)
+// apply plugin: 'com.google.gms.google-services'
+@endif
